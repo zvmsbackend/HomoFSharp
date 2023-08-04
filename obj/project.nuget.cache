@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "gA9VshGEk91EFwXhs4yl/pabP/CXw0lMD69RHzfdm1dJgr2SYxC8Uo85uPg3cp86OUNXUvPURaCJplnZpXBgqA==",
+  "success": true,
+  "projectFilePath": "D:\\workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\qnc\\.nuget\\packages\\fsharp.core\\7.0.300\\fsharp.core.7.0.300.nupkg.sha512",
+    "C:\\Users\\qnc\\.nuget\\packages\\petero.numbers\\1.8.2\\petero.numbers.1.8.2.nupkg.sha512",
+    "C:\\Users\\qnc\\.nuget\\packages\\system.commandline\\2.0.0-beta4.22272.1\\system.commandline.2.0.0-beta4.22272.1.nupkg.sha512"
+  ],
+  "logs": []
+}

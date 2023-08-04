@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "HomoFSharp": {
+      "commandName": "Project",
+      "commandLineArgs": "70"
+    }
+  }
+}

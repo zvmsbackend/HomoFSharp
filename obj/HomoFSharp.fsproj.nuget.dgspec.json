@@ -1,0 +1,81 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj": {}
+  },
+  "projects": {
+    "D:\\workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj",
+        "projectName": "HomoFSharp",
+        "projectPath": "D:\\workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj",
+        "packagesPath": "C:\\Users\\qnc\\.nuget\\packages\\",
+        "outputPath": "D:\\workspace\\Homo\\HomoFSharp\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\VisualStudioShared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\qnc\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.302\\FSharp\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "FSharp.Core": {
+              "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
+              "target": "Package",
+              "version": "[7.0.300, )",
+              "generatePathProperty": true
+            },
+            "PeterO.Numbers": {
+              "target": "Package",
+              "version": "[1.8.2, )",
+              "generatePathProperty": true
+            },
+            "System.CommandLine": {
+              "target": "Package",
+              "version": "[2.0.0-beta4.22272.1, )",
+              "generatePathProperty": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
