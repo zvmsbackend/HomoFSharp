@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj": {}
+    "D:\\Workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj": {}
   },
   "projects": {
-    "D:\\workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj": {
+    "D:\\Workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj",
+        "projectUniqueName": "D:\\Workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj",
         "projectName": "HomoFSharp",
-        "projectPath": "D:\\workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj",
+        "projectPath": "D:\\Workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj",
         "packagesPath": "C:\\Users\\qnc\\.nuget\\packages\\",
-        "outputPath": "D:\\workspace\\Homo\\HomoFSharp\\obj\\",
+        "outputPath": "D:\\Workspace\\Homo\\HomoFSharp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\VisualStudioShared\\NuGetPackages"

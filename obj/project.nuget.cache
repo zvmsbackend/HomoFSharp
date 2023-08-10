@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gA9VshGEk91EFwXhs4yl/pabP/CXw0lMD69RHzfdm1dJgr2SYxC8Uo85uPg3cp86OUNXUvPURaCJplnZpXBgqA==",
+  "dgSpecHash": "ALpTHHPLsdqX30OrnA6+lw1bUTs5mLej1vwGHRwMixKuFvC+A2lFqVJLwWoSk5zT42YPaQeU0EA2CS5dIKBIMQ==",
   "success": true,
-  "projectFilePath": "D:\\workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj",
+  "projectFilePath": "D:\\Workspace\\Homo\\HomoFSharp\\HomoFSharp.fsproj",
   "expectedPackageFiles": [
     "C:\\Users\\qnc\\.nuget\\packages\\fsharp.core\\7.0.300\\fsharp.core.7.0.300.nupkg.sha512",
     "C:\\Users\\qnc\\.nuget\\packages\\petero.numbers\\1.8.2\\petero.numbers.1.8.2.nupkg.sha512",

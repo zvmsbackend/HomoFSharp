@@ -3,82 +3,82 @@ open System.Diagnostics
 open PeterO.Numbers
 open System
 
-type Op = Add | Sub | Mul | Div | Push | Cons
+type Op = Add | Sub | Mul | Div | Push | Operand of value : ERational
 
 let precedence = function
-    | Op.Add | Op.Sub -> 1
-    | Op.Mul | Op.Div -> 2
-    | Op.Cons -> 3
+    | Add | Sub -> 1
+    | Mul | Div -> 2
+    | Operand(_) -> 3
 
 let showOp = function
-    | Op.Cons -> ""
-    | Op.Add -> "+"
-    | Op.Sub -> "-"
-    | Op.Mul -> "*"
-    | Op.Div -> "/"
+    | Add -> "+"
+    | Sub -> "-"
+    | Mul -> "*"
+    | Div -> "/"
 
-type PrecedenceExpr = PrecedenceExpr of content : string * precedence : int
+let opToFunc = function
+    | Add -> (+)
+    | Sub -> (-)
+    | Mul -> (*)
+    | Div -> (/)
 
-let compute source opStack =
-    let ten = ERational.FromInt32(10)
-    let rec loop opStack computeStack sourceStack =
-        match opStack, computeStack, sourceStack with
-        | [], peek :: _, _  -> peek
-        | Op.Push :: opStack, _, item :: sourceStack ->
-            loop opStack (item :: computeStack) sourceStack
-        | op :: opStack, x :: y :: computeStack, _ ->
-            loop opStack ((match op with
-                            | Op.Add -> x + y
-                            | Op.Sub -> x - y
-                            | Op.Mul -> x * y
-                            | Op.Div -> x / y
-                            | Op.Cons -> x * ten + y) :: computeStack) sourceStack
-    loop opStack [] source
+type PrecedenceExpr = Expr of content : string * precedence : int
+                    | Operator of op : Op
 
-let toInfix source opStack =
-    let rec loop opStack computeStack sourceStack =
-        match opStack, computeStack, sourceStack with
-        | [], PrecedenceExpr(content, _) :: _, _ -> content
-        | Op.Push :: opStack, _, item :: sourceStack -> 
-            loop opStack (PrecedenceExpr((int item).ToString(), 4) :: computeStack) sourceStack
-        | op :: opStack, PrecedenceExpr(content1, pr1) :: PrecedenceExpr(content2, pr2) :: computeStack, _ ->
-            let currentPrecedence = precedence op
-            let symbol = showOp op
-            let formatter = match pr1 < currentPrecedence, pr2 < currentPrecedence || ((op = Op.Sub || op = Op.Div) && (pr2 = currentPrecedence)) with
-                            | false, false -> "{0}{2}{1}"
-                            | true, false -> "({0}){2}{1}"
-                            | false, true -> "{0}{2}({1})"
-                            | true, true -> "({0}){2}({1})"
-            loop opStack (PrecedenceExpr(String.Format(formatter, content1, content2, symbol), currentPrecedence) :: computeStack) sourceStack
-    loop opStack [] source
+let ten = ERational.FromInt32(10)
+
+let compute expr =
+    let rec loop expr computeStack =
+        match expr, computeStack with
+        | [], [Operand(peek)] -> peek
+        | _, Operand(x) :: Operand(y) :: op :: computeStack ->
+            loop expr (Operand((opToFunc op) x y) :: computeStack)
+        | item :: expr, _ ->
+            loop expr (item :: computeStack)
+    loop expr []
+
+let toInfix expr =
+    let rec loop expr computeStack =
+        match expr, computeStack with
+        | [], [Expr(content, _)] -> content
+        | _, (Expr(contentl, prl) :: Expr(contentr, prr) :: Operator(op) :: computeStack) ->
+            let prm = precedence op
+            let formatter = match prl < prm, prr < prm || ((op = Op.Sub || op = Op.Div) && (prr = prm)) with
+                            | false, false -> "{0}{1}{2}"
+                            | true, false -> "({0}){1}{2}"
+                            | false, true -> "{0}{1}({2})"
+                            | true, true -> "({0}){1}({2})"
+            loop expr (Expr(String.Format(formatter, contentl, showOp op, contentr), prm) :: computeStack)
+        | Operand(value) :: expr, computeStack ->
+            loop expr (Expr(string (int value), 4) :: computeStack)
+        | op :: expr, computeStack ->
+            loop expr (Operator(op) :: computeStack)
+    loop expr []
 
 let proveAll source target =
-    let len = (List.length source) * 2 - 1
-    let rec loop a b opStack =
-        seq {
-            if a + b = len
-            then 
-                let opStack = List.rev opStack
-                let result = compute source opStack
-                if result = target then
-                    yield opStack
+    let rec loop source expr opCount =
+        if List.isEmpty source && opCount = 1 then
+            if compute expr = target then
+                Seq.singleton expr
             else
-                if a <= len / 2 then
-                    yield! loop (a + 1) b (Op.Push :: opStack)
-                if a > b + 1 then
-                    yield! [Op.Add; Op.Sub; Op.Mul; Op.Div] 
-                            |> Seq.map (fun op -> loop a (b + 1) (op :: opStack))
-                            |> Seq.concat
-                let rec loop1 i =
-                    seq {
-                        if a + i < len / 2 && a > b - 2 then
-                            yield! loop (a + 2 + i) (b + 1 + i) [
-                                yield! Seq.replicate (i + 1) Op.Cons
-                                yield! Seq.replicate (i + 2) Op.Push
-                                yield! opStack]
-                            yield! loop1 (i + 1)}
-                yield! loop1 0}
-    loop 0 0 []
+                Seq.empty
+        else
+            let ret = match source with
+                      | [] -> Seq.empty
+                      | item :: source -> seq { yield! loop source (Operand(item) :: expr) (opCount + 1) }
+            let ret = if opCount > 1 then
+                          seq { 
+                              for op in [Add; Sub; Mul; Div] do
+                                  yield! loop source (op :: expr) (opCount - 1)
+                              yield! ret }
+                      else
+                          ret
+            match source, expr with
+            | a :: source, Operand(b) :: expr -> seq { 
+                                                     yield! loop source (Operand(b * ten + a) :: expr) opCount 
+                                                     yield! ret }
+            | _ -> ret
+    loop source [] 0
 
 let prove source = proveAll source >> Seq.tryHead
 
@@ -86,7 +86,7 @@ let getInts n =
     let rec loop n acc =
         if n > 0
         then loop (n / 10) (ERational.FromInt32(n % 10) :: acc)
-        else List.rev acc
+        else acc
     loop n []
 
 [<EntryPoint>]
@@ -103,22 +103,21 @@ let main args =
         let args = (source, ERational.FromInt32(target))
         let stopwatch = new Stopwatch()
         stopwatch.Start()
-        if digest
-        then 
+        if digest then
             match prove <|| args with
             | Some(data) -> data
-                            |> toInfix source
+                            |> toInfix
                             |> printfn "%d = %s" target
             | None -> printfn "No result found"
             stopwatch.Stop()
         else
             let result = args 
                         ||> proveAll
-                        |> Seq.map (toInfix source)
+                        |> Seq.map toInfix
                         |> Seq.distinct
                         |> Seq.toList
             stopwatch.Stop()
-            let count = result
+            let count = result   
                         |> Seq.map (fun expr ->
                            printfn "%d = %s" target expr
                            1)
